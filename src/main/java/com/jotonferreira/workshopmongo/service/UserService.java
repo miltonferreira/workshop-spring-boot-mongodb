@@ -18,10 +18,12 @@ public class UserService {
 	@Autowired //assim o spring procura a classe e instancia para ser usada, sendo injetação de dependecia automatica
 	private UserRepository repo;
 	
+	// pega dos os users no BD
 	public List<User> findAll(){
 		return repo.findAll(); // retorna todos os usuarios
 	}
 	
+	// procura por ID o user no BD
 	public User findById(String id) {
 		
 		Optional<User> obj = repo.findById(id); // pega no BD o ID
@@ -40,6 +42,23 @@ public class UserService {
 		repo.deleteById(id);
 	}
 	
+	public User update(User obj) {
+		
+		User newObj = findById(obj.getId()); // procurar o user pelo ID
+		
+		updateData(newObj, obj); // colocar as infos do user no novo user
+		
+		return repo.save(newObj); // salvar as novas infos no BD
+		
+	}
+	
+	private void updateData(User newObj, User obj) {
+		
+		newObj.setName(obj.getName());
+		newObj.setEmail(obj.getEmail());
+		
+	}
+
 	// cria uma novo user com as informações do objDTO
 	public User fromDTO(UserDTO objDTO) {
 		return new User(objDTO.getId(), objDTO.getName(), objDTO.getEmail());

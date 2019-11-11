@@ -68,6 +68,17 @@ public class UserResource {
 		return ResponseEntity.noContent().build(); // retorna null com codigo 204 para o HTTP
 		
 	}
+	
+	@RequestMapping(value="/{id}", method=RequestMethod.PUT) // ou PostMapping - com POST é possivel inserir novo user e infos ao BD
+	public ResponseEntity<Void> update(@RequestBody UserDTO objDto, @PathVariable String id){ // @RequestBody = corpo da requisição que é o UserDTO
+		
+		User obj = service.fromDTO(objDto); // 
+		obj.setId(id);
+		obj = service.update(obj); // insere no BD o user
+		
+		return ResponseEntity.noContent().build(); // retorna null com codigo 204 para o HTTP
+		
+	}
 
 //	@RequestMapping(method = RequestMethod.GET) // obtem informações com o get no padrão Rest >>> @GetMapping é a mesma coisa <<<
 //	// ResponseEntity encapsula com reposta HTTP com cabeçalhos e possiveis erros

@@ -1,6 +1,7 @@
 package com.jotonferreira.workshopmongo.resources;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jotonferreira.workshopmongo.domain.User;
+import com.jotonferreira.workshopmongo.dto.UserDTO;
 import com.jotonferreira.workshopmongo.service.UserService;
 
 @RestController // recursos rest para o endpoint
@@ -21,12 +23,15 @@ public class UserResource {
 	
 	@RequestMapping(method = RequestMethod.GET) // obtem informações com o get no padrão Rest >>> @GetMapping é a mesma coisa <<<
 	// ResponseEntity encapsula com reposta HTTP com cabeçalhos e possiveis erros
-	public ResponseEntity<List<User>> findAll(){
+	public ResponseEntity<List<UserDTO>> findAll(){
 		
 		List<User> list = service.findAll(); // pega todos os usuarios no BD
 		
+		// converte User para UserDTO com lambda
+		List<UserDTO> listDTO = list.stream().map(x -> new UserDTO(x)).collect(Collectors.toList());
+		
 		// ok instancia o ResponseEntity com codigo de resposta HTTP, que a resposta ocorreu com sucesso
-		return ResponseEntity.ok().body(list); // body é o corpo da resposta com a lista
+		return ResponseEntity.ok().body(listDTO); // body é o corpo da resposta com a lista
 		
 	}
 

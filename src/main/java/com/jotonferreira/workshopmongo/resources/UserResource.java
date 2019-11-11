@@ -5,6 +5,8 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,6 +34,15 @@ public class UserResource {
 		
 		// ok instancia o ResponseEntity com codigo de resposta HTTP, que a resposta ocorreu com sucesso
 		return ResponseEntity.ok().body(listDTO); // body é o corpo da resposta com a lista
+		
+	}
+	
+	@RequestMapping(value="/{id}", method=RequestMethod.GET) // com value="/{id}" se cria um novo REST para pegar o id do usuario
+	public ResponseEntity<UserDTO> findById(@PathVariable String id){ // com @PathVariable indica que tem que ser igual a info do ID
+		
+		User obj = service.findById(id); // pega o id requisitado no MongoDB
+		
+		return ResponseEntity.ok().body(new UserDTO(obj)); // retorna as infos do User como DTO
 		
 	}
 

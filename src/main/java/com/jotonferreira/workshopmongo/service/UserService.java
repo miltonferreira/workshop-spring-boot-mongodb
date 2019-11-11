@@ -13,7 +13,7 @@ import com.jotonferreira.workshopmongo.service.exception.ObjectNotFoundException
 
 @Service // indica que é um serviço que pode ser injetado em outras classes
 public class UserService {
-	// camada de repositorio para pegar infos no BD
+	// camada de serviço para pegar infos no BD
 	
 	@Autowired //assim o spring procura a classe e instancia para ser usada, sendo injetação de dependecia automatica
 	private UserRepository repo;
@@ -35,7 +35,12 @@ public class UserService {
 		return repo.insert(obj);
 	}
 	
-	// ?????
+	public void delete(String id) {
+		findById(id); //se não encontrar o ID lança uma exceção
+		repo.deleteById(id);
+	}
+	
+	// cria uma novo user com as informações do objDTO
 	public User fromDTO(UserDTO objDTO) {
 		return new User(objDTO.getId(), objDTO.getName(), objDTO.getEmail());
 	}

@@ -48,15 +48,24 @@ public class UserResource {
 		
 	}
 	
-	@RequestMapping(method=RequestMethod.POST) // ou PostMapping - 
-	public ResponseEntity<Void> insert(@RequestBody UserDTO objDto){ // 
+	@RequestMapping(method=RequestMethod.POST) // ou PostMapping - com POST é possivel inserir novo user e infos ao BD
+	public ResponseEntity<Void> insert(@RequestBody UserDTO objDto){ // @RequestBody = corpo da requisição que é o UserDTO
 		
 		User obj = service.fromDTO(objDto); // 
 		obj = service.insert(obj); // insere no BD o user
 		
-		// pega o endereço do novo obj que inseriu
+		// pega o endereço com ID do novo obj que inseriu
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build(); // retorna resposta vazia com codigo 201 e cabeçalho com o novo recurso criado
+		
+	}
+	
+	@RequestMapping(value="/{id}", method=RequestMethod.DELETE) // com DELETE é possivel excluir um user do BD
+	public ResponseEntity<Void> delete(@PathVariable String id){ // com @PathVariable indica que tem que ser igual a info do ID
+		
+		service.delete(id); // pega o id requisitado no MongoDB
+		
+		return ResponseEntity.noContent().build(); // retorna null com codigo 204 para o HTTP
 		
 	}
 

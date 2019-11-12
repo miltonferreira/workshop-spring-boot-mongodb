@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.jotonferreira.workshopmongo.domain.Post;
 import com.jotonferreira.workshopmongo.domain.User;
 import com.jotonferreira.workshopmongo.dto.UserDTO;
 import com.jotonferreira.workshopmongo.service.UserService;
@@ -77,6 +78,15 @@ public class UserResource {
 		obj = service.update(obj); // atualiza no BD o user
 		
 		return ResponseEntity.noContent().build(); // retorna null com codigo 204 para o HTTP
+		
+	}
+	
+	@RequestMapping(value="/{id}/posts", method=RequestMethod.GET) // com value="/{id}/posts" se cria um novo REST para pegar os posts do usuario
+	public ResponseEntity<List<Post>> findPosts(@PathVariable String id){ // com @PathVariable indica que tem que ser igual a info do ID
+		
+		User obj = service.findById(id); // pega o id requisitado no MongoDB
+		
+		return ResponseEntity.ok().body(obj.getPosts()); // retorna as infos dos posts
 		
 	}
 

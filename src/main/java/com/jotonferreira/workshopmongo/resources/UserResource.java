@@ -69,12 +69,12 @@ public class UserResource {
 		
 	}
 	
-	@RequestMapping(value="/{id}", method=RequestMethod.PUT) // ou PostMapping - com POST é possivel inserir novo user e infos ao BD
+	@RequestMapping(value="/{id}", method=RequestMethod.PUT) // ou PostMapping - com PUT é possivel atualizar infos do user
 	public ResponseEntity<Void> update(@RequestBody UserDTO objDto, @PathVariable String id){ // @RequestBody = corpo da requisição que é o UserDTO
 		
 		User obj = service.fromDTO(objDto); // 
-		obj.setId(id);
-		obj = service.update(obj); // insere no BD o user
+		obj.setId(id); // pega o ID
+		obj = service.update(obj); // atualiza no BD o user
 		
 		return ResponseEntity.noContent().build(); // retorna null com codigo 204 para o HTTP
 		

@@ -33,7 +33,8 @@ public class PostService {
 	
 	// retorna uma lista de post's na procura
 	public List<Post> findByTitle(String text){
-		return repo.findByTitleContainingIgnoreCase(text);
+		//return repo.findByTitleContainingIgnoreCase(text);
+		return repo.findbyTitleQuery(text); // pesquisa mais simples usando @Query na interface PostRepository
 	}
 	
 }

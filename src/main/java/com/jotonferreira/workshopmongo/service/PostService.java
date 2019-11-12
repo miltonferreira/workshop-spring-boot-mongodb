@@ -1,5 +1,6 @@
 package com.jotonferreira.workshopmongo.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,17 +25,20 @@ public class PostService {
 	
 	// procura por ID o user no BD
 	public Post findById(String id) {
-		
 		Optional<Post> obj = repo.findById(id); // pega no BD o ID
-		
 		return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado")); // retorna o user ou uma exceção
-		
 	}
 	
 	// retorna uma lista de post's na procura
 	public List<Post> findByTitle(String text){
 		//return repo.findByTitleContainingIgnoreCase(text);
 		return repo.findbyTitleQuery(text); // pesquisa mais simples usando @Query na interface PostRepository
+	}
+	
+	// retorna pesquisa no titulo, no corpo do post e comentarios com data minima e maxima
+	public List<Post> fullSearch(String text, Date minDate, Date maxDate){
+		maxDate = new Date(maxDate.getTime() + 24 * 60 * 60 * 1000); // acrescenta mais 1 dia ao maxDate
+		return repo.fullSearch(text, minDate, maxDate); // retorna a pesquisa no MongoDB
 	}
 	
 }
